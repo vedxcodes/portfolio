@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ved Prakash Sahu — Portfolio</title>
+<meta name="description" content="Ved Prakash Sahu — backend engineer and product-data analyst. Real-time financial pipelines, RAG systems, and churn-risk analytics dashboards.">
+<meta name="theme-color" content="#0A0E14">
+<meta property="og:title" content="Ved Prakash Sahu — Portfolio">
+<meta property="og:description" content="Backend engineer and product-data analyst who builds real-time financial pipelines, then turns the same data into dashboards and decisions.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0E14'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%2335D999'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E14;
+    --panel:#10161F;
+    --panel-2:#0D1219;
+    --border:#1E2733;
+    --text:#E7ECF2;
+    --dim:#7C8798;
+    --dim-2:#4E5A6B;
+    --mint:#35D999;
+    --mint-dim:rgba(53,217,153,0.12);
+    --amber:#F0A857;
+    --amber-dim:rgba(240,168,87,0.12);
+    --mono:'IBM Plex Mono', ui-monospace, monospace;
+    --sans:'IBM Plex Sans', system-ui, sans-serif;
+    --maxw:1080px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{background:var(--mint-dim); color:var(--mint);}
+
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--mint); outline-offset:3px; border-radius:2px;}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+
+  /* subtle ledger grid background */
+  .grid-bg{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:100% 44px, 88px 100%;
+    mask-image:linear-gradient(180deg, black, black 60%, transparent 100%);
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:20;
+    backdrop-filter:blur(10px);
+    background:rgba(10,14,20,0.82);
+    border-bottom:1px solid var(--border);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:64px;}
+  .mark{
+    font-family:var(--mono); font-weight:600; font-size:14px; letter-spacing:0.02em;
+    display:flex; align-items:center; gap:8px; text-decoration:none;
+  }
+  .mark .dot{width:7px; height:7px; border-radius:50%; background:var(--mint); box-shadow:0 0 8px var(--mint);}
+  .navlinks{display:flex; gap:28px; font-family:var(--mono); font-size:13px; color:var(--dim);}
+  .navlinks a{text-decoration:none; transition:color .15s; white-space:nowrap;}
+  .navlinks a:hover{color:var(--mint);}
+  @media (max-width:640px){
+    nav .wrap{height:auto; flex-wrap:wrap; padding-top:12px; padding-bottom:12px; gap:8px;}
+    .navlinks{gap:14px; font-size:11.5px; overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  }
+
+  /* ---------- HERO ---------- */
+  header.hero{position:relative; z-index:1; padding:76px 0 40px;}
+  .eyebrow{
+    font-family:var(--mono); font-size:12.5px; color:var(--mint);
+    letter-spacing:0.08em; text-transform:uppercase; margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:22px; height:1px; background:var(--mint);}
+
+  h1.name{
+    font-family:var(--mono); font-weight:700;
+    font-size:clamp(34px, 6vw, 58px);
+    line-height:1.05; margin:0 0 14px; letter-spacing:-0.01em;
+  }
+
+  .tagline{
+    font-size:clamp(16px, 2.4vw, 19px); color:var(--dim); max-width:620px; margin:0 0 30px;
+    min-height:52px;
+  }
+  .tagline strong{color:var(--text); font-weight:600;}
+
+  /* lens toggle */
+  .lens{
+    display:inline-flex; padding:4px; background:var(--panel); border:1px solid var(--border);
+    border-radius:999px; margin-bottom:38px; font-family:var(--mono); font-size:12.5px;
+  }
+  .lens button{
+    appearance:none; border:none; background:transparent; color:var(--dim);
+    padding:9px 16px; border-radius:999px; cursor:pointer; font-family:var(--mono); font-size:12.5px;
+    transition:all .2s; white-space:nowrap;
+  }
+  .lens button.active{background:var(--mint-dim); color:var(--mint);}
+  .lens button:hover:not(.active){color:var(--text);}
+
+  /* pipeline ticker — signature element */
+  .pipeline{
+    position:relative; margin:0 0 44px; padding:26px 22px;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    overflow:hidden;
+  }
+  .pipeline-label{font-family:var(--mono); font-size:11px; color:var(--dim-2); letter-spacing:.08em; text-transform:uppercase; margin-bottom:18px;}
+  .pipeline-track{position:relative; display:flex; align-items:center; justify-content:space-between; gap:0;}
+  .pipeline-line{
+    position:absolute; left:20px; right:20px; top:50%; height:1px;
+    background:var(--border);
+  }
+  .pipeline-pulse{
+    position:absolute; top:50%; left:20px; width:8px; height:8px; margin-top:-4px;
+    border-radius:50%; background:var(--mint); box-shadow:0 0 12px 2px var(--mint);
+    animation:travel 4.5s linear infinite;
+  }
+  @keyframes travel{
+    0%{ left:20px; opacity:0; }
+    5%{ opacity:1; }
+    92%{ opacity:1; }
+    100%{ left:calc(100% - 28px); opacity:0; }
+  }
+  .pipeline-node{
+    position:relative; z-index:1; background:var(--panel-2); border:1px solid var(--border);
+    border-radius:8px; padding:10px 16px; font-family:var(--mono); font-size:12.5px;
+    color:var(--text); display:flex; flex-direction:column; gap:2px; min-width:0;
+  }
+  .pipeline-node span.k{color:var(--dim-2); font-size:10px; letter-spacing:.06em; text-transform:uppercase;}
+  @media (max-width:700px){
+    .pipeline-track{flex-wrap:wrap; gap:12px;}
+    .pipeline-line, .pipeline-pulse{display:none;}
+    .pipeline-node{flex:1 1 40%;}
+  }
+
+  .hero-links{display:flex; flex-wrap:wrap; gap:12px;}
+  .btn{
+    font-family:var(--mono); font-size:13px; text-decoration:none;
+    padding:11px 18px; border-radius:6px; border:1px solid var(--border);
+    color:var(--text); transition:all .15s; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn:hover{border-color:var(--mint); color:var(--mint);}
+  .btn.primary{background:var(--mint); color:#08120D; border-color:var(--mint); font-weight:600;}
+  .btn.primary:hover{background:#2ec488; color:#08120D;}
+
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section{position:relative; z-index:1; padding:64px 0; border-top:1px solid var(--border);}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:34px;}
+  .sec-num{font-family:var(--mono); font-size:12px; color:var(--dim-2);}
+  h2.sec-title{font-family:var(--mono); font-size:22px; font-weight:600; margin:0; letter-spacing:-0.01em;}
+  .sec-sub{font-family:var(--mono); font-size:12.5px; color:var(--dim-2); margin-left:auto; text-align:right;}
+
+  p.lede{color:var(--dim); max-width:680px; font-size:15.5px;}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid; grid-template-columns:1.4fr 1fr; gap:40px;}
+  @media (max-width:760px){ .about-grid{grid-template-columns:1fr;} }
+  .fact-list{display:flex; flex-direction:column; gap:0; border-top:1px solid var(--border);}
+  .fact{display:flex; justify-content:space-between; gap:12px; padding:13px 0; border-bottom:1px solid var(--border); font-size:13.5px;}
+  .fact .k{font-family:var(--mono); color:var(--dim-2); font-size:12px;}
+  .fact .v{text-align:right; color:var(--text);}
+
+  /* ---------- EXPERIENCE (ledger rows) ---------- */
+  .xp-entry{padding:26px 0; border-bottom:1px solid var(--border);}
+  .xp-entry:first-child{padding-top:0;}
+  .xp-entry:last-child{border-bottom:none;}
+  .xp-top{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:12px;}
+  .xp-role{font-size:16.5px; font-weight:600;}
+  .xp-role .co{color:var(--mint);}
+  .xp-date{font-family:var(--mono); font-size:12px; color:var(--dim-2); white-space:nowrap;}
+  ul.bullets{margin:0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:9px;}
+  ul.bullets li{position:relative; padding-left:20px; font-size:14.5px; color:var(--dim);}
+  ul.bullets li::before{content:'—'; position:absolute; left:0; color:var(--dim-2); font-family:var(--mono);}
+  ul.bullets li strong{color:var(--text); font-weight:600;}
+
+  /* ---------- PROJECTS ---------- */
+  .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media (max-width:760px){ .proj-grid{grid-template-columns:1fr;} }
+  .card{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:22px; transition:border-color .2s, transform .2s; order:5;
+  }
+  .card:hover{border-color:var(--mint);}
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px;}
+  .card h3{margin:0; font-size:15.5px; font-weight:600;}
+  .card .cat{font-family:var(--mono); font-size:10px; color:var(--amber); letter-spacing:.06em; text-transform:uppercase; border:1px solid var(--amber-dim); background:var(--amber-dim); padding:3px 8px; border-radius:20px; white-space:nowrap;}
+  .card p.desc{font-size:13.5px; color:var(--dim); margin:0 0 14px;}
+  .tags{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;}
+  .tag{font-family:var(--mono); font-size:10.5px; color:var(--dim); background:var(--panel-2); border:1px solid var(--border); padding:3px 8px; border-radius:4px;}
+  .card-link{font-family:var(--mono); font-size:12px; color:var(--mint); text-decoration:none; display:inline-flex; align-items:center; gap:5px;}
+  .card-link:hover{text-decoration:underline;}
+  .card.emph{border-color:var(--mint); box-shadow:0 0 0 1px var(--mint) inset;}
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:24px 40px;}
+  @media (max-width:760px){ .skills-grid{grid-template-columns:1fr;} }
+  .skill-group{border-top:1px solid var(--border); padding-top:14px; transition:opacity .2s;}
+  .skill-group h4{font-family:var(--mono); font-size:11.5px; color:var(--dim-2); text-transform:uppercase; letter-spacing:.06em; margin:0 0 12px; font-weight:500;}
+  .skill-tags{display:flex; flex-wrap:wrap; gap:7px;}
+  .skill-tags span{font-size:13px; color:var(--text); background:var(--panel); border:1px solid var(--border); padding:5px 10px; border-radius:5px;}
+  .skill-group.dimmed{opacity:0.4;}
+
+  /* ---------- LEADERSHIP / ACHIEVEMENTS ---------- */
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:40px;}
+  @media (max-width:760px){ .two-col{grid-template-columns:1fr;} }
+  .plain-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:16px;}
+  .plain-list li{border-bottom:1px solid var(--border); padding-bottom:16px; font-size:14px;}
+  .plain-list li:last-child{border-bottom:none; padding-bottom:0;}
+  .plain-list .role{font-weight:600; margin-bottom:3px;}
+  .plain-list .org{color:var(--dim-2); font-family:var(--mono); font-size:11.5px; margin-bottom:5px;}
+  .plain-list .desc{color:var(--dim); font-size:13.5px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{position:relative; z-index:1; padding:56px 0 40px; text-align:center;}
+  footer .big{font-family:var(--mono); font-size:clamp(24px,4vw,34px); font-weight:600; margin-bottom:18px;}
+  footer .btn{margin:4px;}
+  footer .fine{margin-top:36px; font-family:var(--mono); font-size:11.5px; color:var(--dim-2);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="mark"><span class="dot"></span>VED SAHU</a>
+    <div class="navlinks">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="eyebrow">B.Tech Information Technology · HBTU Kanpur · Class of 2027</div>
+    <h1 class="name">Ved Prakash Sahu</h1>
+    <p class="tagline" id="tagline"><strong>Backend engineer and product-data analyst</strong> who builds real-time financial pipelines, then turns the same data into dashboards and decisions.</p>
+
+    <div class="lens" role="group" aria-label="Choose how to read this portfolio">
+      <button class="active" data-lens="both" aria-pressed="true">Both</button>
+      <button data-lens="eng" aria-pressed="false">Reading as: Engineering</button>
+      <button data-lens="data" aria-pressed="false">Reading as: Product &amp; Data</button>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-label">// a pipeline he's actually shipped — Tally Prime → ledger dashboard</div>
+      <div class="pipeline-track">
+        <div class="pipeline-line"></div>
+        <div class="pipeline-pulse"></div>
+        <div class="pipeline-node"><span class="k">01 ingest</span>Tally Prime + Redis</div>
+        <div class="pipeline-node"><span class="k">02 transform</span>ETL workflows</div>
+        <div class="pipeline-node"><span class="k">03 model</span>Risk / retrieval logic</div>
+        <div class="pipeline-node"><span class="k">04 serve</span>Dashboard / API</div>
+      </div>
+    </div>
+
+    <div class="hero-links">
+      <a class="btn primary" href="mailto:vedsahu.2005@gmail.com">Email me</a>
+      <a class="btn" href="https://github.com/vedxcodes" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="https://linkedin.com/in/VedSahu" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn" href="tel:+918810934145">+91 88109 34145</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">§ 01</span>
+      <h2 class="sec-title">About</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p class="lede" style="max-width:100%; font-size:16px; color:var(--text);">
+          Works at the point where backend systems meet financial data. At Care Detergents I built the
+          pipeline that keeps a live ledger platform in sync with Tally Prime in near real time; on the side,
+          I train churn-risk models and builds retrieval systems that route questions to the right evidence.
+          The common thread: taking messy, real-world data — transaction logs, support tickets, question papers —
+          and making it operational, whether that means an API endpoint or a KPI on a dashboard.
+        </p>
+        <p class="lede" style="max-width:100%;">
+          Currently Final Year Student and Training &amp; Placement Student Coordinator at HBTU Kanpur. Also building SmartShala Services.     </div>
+      <div class="fact-list">
+        <div class="fact"><span class="k">EDUCATION</span><span class="v">B.Tech Information Technology, HBTU Kanpur
+        </span></div>
+        <div class="fact"><span class="k">LOCATION</span><span class="v">Kanpur, Uttar Pradesh, India</span></div>
+        <div class="fact"><span class="k">CURRENTLY</span><span class="v">SDE Intern, Care Detergents Pvt. Ltd</span></div>
+        <div class="fact"><span class="k">FOCUS</span><span class="v">Backend systems · RAG/AI · Product analytics</span></div>
+        <div class="fact"><span class="k">EMAIL</span><span class="v">vedsahu.2005@gmail.com</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">§ 02</span>
+      <h2 class="sec-title">Experience</h2>
+    </div>
+
+    <div class="xp-entry">
+      <div class="xp-top">
+        <div class="xp-role"><span class="co">Care Detergents Pvt. Ltd</span> — Software Development Engineer (SDE) Intern</div>
+        <div class="xp-date">May 2026 – Jul 2026</div>
+      </div>
+      <ul class="bullets">
+        <li>Engineered a scalable, real-time <strong>B2B ledger platform</strong> using React Native and REST APIs, streamlining transaction recording and balance management across companies and wholesalers — cutting manual reconciliation effort by <strong>~35%</strong>.</li>
+        <li>Built a live financial data pipeline integrating <strong>Tally Prime</strong> with backend servers using Docker, Redis, socket-based communication, and ETL workflows, enabling near real-time sync with sub-second latency.</li>
+        <li>Implemented <strong>CI/CD pipelines</strong> that improved release reliability and cut deployment time by <strong>~40%</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="xp-entry">
+      <div class="xp-top">
+        <div class="xp-role"><span class="co">SmartShala Ed.Tech</span> — Backend Intern</div>
+        <div class="xp-date">Oct 2025 – Dec 2025</div>
+      </div>
+      <ul class="bullets">
+        <li>Designed an <strong>AI-driven exam-prediction system</strong> with Python, pandas, NumPy, and Scikit-learn — analyzing 3+ years of past question papers to forecast high-frequency topics.</li>
+        <li>Built and integrated backend services for a scalable EdTech platform using React and Firebase, covering lecture APIs, content management, and chatbot support.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">§ 03</span>
+      <h2 class="sec-title">Projects</h2>
+      <span class="sec-sub">5 shipped · toggle lens to re-sort</span>
+    </div>
+
+    <div class="proj-grid" id="projGrid">
+
+      <div class="card" data-lens="data">
+        <div class="card-top">
+          <h3>Product Usage &amp; Churn Risk Analytics Dashboard</h3>
+          <span class="cat">Product · Data</span>
+        </div>
+        <p class="desc">End-to-end analytics pipeline on a 6,000-account B2B fintech dataset modeled on Tier 1 banks and Fortune 100 corporations — from raw usage data to a stakeholder-ready retention plan.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">SQLite</span><span class="tag">Streamlit</span><span class="tag">Plotly</span><span class="tag">Random Forest</span></div>
+        <ul class="bullets" style="margin-bottom:14px;">
+          <li>Trained a Random Forest classifier for churn risk, evaluated with ROC-AUC / precision / recall, surfacing high-risk accounts ranked by revenue at stake.</li>
+          <li>Separated real churn drivers (low feature adoption, high support load) from red herrings (plan tier, region) via correlation and segment analysis.</li>
+          <li>Shipped a 4-tab Streamlit dashboard — KPIs, Drivers, Model, Recommendations.</li>
+        </ul>
+        <a class="card-link" href="https://appuct-usage-churn-risk-analytics-dashboard-bkrefhjwdaghftxlki.streamlit.app/" target="_blank" rel="noopener">View Live Demo ↗</a>
+        <a class="card-link" href="https://github.com/vedxcodes/Product-Usage-Churn-Risk-Analytics-Dashboard" target="_blank" rel="noopener">View on GitHub ↗</a>
+      </div>
+       
+
+      <div class="card" data-lens="eng">
+        <div class="card-top">
+          <h3>Legal RAG Processor</h3>
+          <span class="cat">Engineering · AI</span>
+        </div>
+        <p class="desc">A backend-first hybrid RAG system for legal question-answering, combining vector search, graph context expansion, and cached session memory behind one API.</p>
+        <div class="tags"><span class="tag">Flask</span><span class="tag">ChromaDB</span><span class="tag">Neo4j</span><span class="tag">Redis</span><span class="tag">LangChain</span><span class="tag">spaCy</span></div>
+        <ul class="bullets" style="margin-bottom:14px;">
+          <li>Multi-stage pipeline: extraction → chunking → embedding (Sentence Transformers) → dual vector/graph retrieval → prompt assembly via Gemini.</li>
+          <li>Built a lightweight knowledge graph with spaCy NER, linking document chunks to entities for retrieval beyond pure similarity.</li>
+          <li>Exposed session, upload, and query endpoints with CORS for external frontend integration.</li>
+        </ul>
+        <a class="card-link" href="https://github.com/vedxcodes/Legal-Doc-" target="_blank" rel="noopener">View on GitHub ↗</a>
+      </div>
+
+      <div class="card" data-lens="eng">
+        <div class="card-top">
+          <h3>Clinical RAG Flask</h3>
+          <span class="cat">Engineering · AI</span>
+        </div>
+        <p class="desc">A query-routing layer that reads an incoming clinical question and automatically decides which evidence source can actually answer it.</p>
+        <div class="tags"><span class="tag">Flask</span><span class="tag">LangGraph</span><span class="tag">Chroma</span><span class="tag">Gemini</span><span class="tag">Redis</span></div>
+        <ul class="bullets" style="margin-bottom:14px;">
+          <li>LangGraph agentic workflow classifies questions and routes them to internal docs, live PubMed, or app docs — not one fixed retrieval path.</li>
+          <li>Automated evidence-source selection, reducing manual triage of information requests.</li>
+          <li>Session-persistent context via Redis for multi-turn, evidence-grounded follow-ups.</li>
+        </ul>
+        <a class="card-link" href="https://github.com/vedxcodes/Clinical-Rag-Flask-" target="_blank" rel="noopener">View on GitHub ↗</a>
+      </div>
+
+      <div class="card" data-lens="eng">
+        <div class="card-top">
+          <h3>Smart Feedback Collector</h3>
+          <span class="cat">Engineering · Automation</span>
+        </div>
+        <p class="desc">A full-stack tool that automates who on a team gets assigned a piece of work, based on expertise and portfolio history rather than a manual queue.</p>
+        <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">MongoDB</span><span class="tag">Inngest</span><span class="tag">Gemini AI</span></div>
+        <ul class="bullets" style="margin-bottom:14px;">
+          <li>AI-powered task-routing that matches work to the most suitable team member via domain-expertise and portfolio analysis.</li>
+          <li>Full-stack build on Next.js, TypeScript, Tailwind CSS, and MongoDB.</li>
+          <li>Gemini AI + Inngest wired together for event-driven workflow automation.</li>
+        </ul>
+        <a class="card-link" href="https://github.com/vedxcodes/FeedBack-Collector" target="_blank" rel="noopener">View on GitHub ↗</a>
+      </div>
+
+      <div class="card" data-lens="eng">
+        <div class="card-top">
+          <h3>Traffic Flow Optimizer Model</h3>
+          <span class="cat">Engineering · Computer Vision</span>
+        </div>
+        <p class="desc">An emergency-vehicle and traffic-density detection system, built to turn raw video feeds into real-time counts an API can serve.</p>
+        <div class="tags"><span class="tag">YOLOv8</span><span class="tag">OpenCV</span><span class="tag">FastAPI</span><span class="tag">Docker</span></div>
+        <ul class="bullets" style="margin-bottom:14px;">
+          <li>End-to-end detection system using YOLOv8 and OpenCV for image/video analysis.</li>
+          <li>FastAPI REST endpoints serving vehicle count, traffic density, and real-time analytics.</li>
+          <li>Full-stack app with Docker deployment and an interactive HTML/CSS/JS frontend.</li>
+        </ul>
+        <a class="card-link" href="https://github.com/vedxcodes/Traffic-Flow-Optimizer" target="_blank" rel="noopener">View on GitHub ↗</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">§ 04</span>
+      <h2 class="sec-title">Skills</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group" data-lens="data">
+        <h4>Languages &amp; Data</h4>
+        <div class="skill-tags"><span>Python</span><span>C++</span><span>JavaScript</span><span>SQL</span><span>SQLite</span><span>pandas</span><span>NumPy</span></div>
+      </div>
+      <div class="skill-group" data-lens="eng">
+        <h4>Backend &amp; APIs</h4>
+        <div class="skill-tags"><span>Flask</span><span>FastAPI</span><span>Node.js</span><span>REST APIs</span><span>Microservice-style architecture</span></div>
+      </div>
+      <div class="skill-group" data-lens="eng">
+        <h4>AI / LLM &amp; Automation</h4>
+        <div class="skill-tags"><span>LangChain</span><span>LangGraph</span><span>Gemini API</span><span>RAG pipelines</span><span>TensorFlow</span><span>Scikit-learn</span></div>
+      </div>
+      <div class="skill-group" data-lens="eng">
+        <h4>Data Stores</h4>
+        <div class="skill-tags"><span>MongoDB</span><span>ChromaDB</span><span>Neo4j</span><span>Redis</span><span>SQLite</span></div>
+      </div>
+      <div class="skill-group" data-lens="eng">
+        <h4>Frontend</h4>
+        <div class="skill-tags"><span>React.js</span><span>React Native</span><span>Next.js</span><span>TypeScript</span><span>HTML/CSS</span></div>
+      </div>
+      <div class="skill-group" data-lens="data">
+        <h4>Visualization &amp; Reporting</h4>
+        <div class="skill-tags"><span>Streamlit</span><span>Plotly</span><span>KPI Reporting</span></div>
+      </div>
+      <div class="skill-group">
+        <h4>DevOps &amp; Tools</h4>
+        <div class="skill-tags"><span>Docker</span><span>CI/CD</span><span>Git/GitHub</span><span>Postman</span><span>ETL Workflows</span><span>Jupyter</span><span>Google Colab</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="leadership">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">§ 05</span>
+      <h2 class="sec-title">Leadership &amp; Achievements</h2>
+    </div>
+    <div class="two-col">
+      <div>
+        <ul class="plain-list">
+          <li>
+            <div class="role">Training &amp; Placement Student Coordinator</div>
+            <div class="org">Training &amp; Placement Cell, HBTU Kanpur · Mar 2026 – Present</div>
+            <div class="desc">Coordinates placement operations, managing data and liaising with recruiters to streamline hiring.</div>
+          </li>
+          <li>
+            <div class="role">Inter-disciplinary Projects &amp; Research Lead</div>
+            <div class="org">FCIT, Association of CS-IT, HBTU Kanpur · Nov 2025 – May 2026</div>
+            <div class="desc">Led inter-disciplinary research and project initiatives, driving technical coordination across teams.</div>
+          </li>
+          <li>
+            <div class="role">Official Fest Coordinator (OFC-Adhyaay'26)</div>
+            <div class="org">Cultural Sub-Council, HBTU Kanpur · Jan 2026 – Apr 2026</div>
+            <div class="desc">Managed stage operations, hospitality, and overall event coordination for Adhyaay'26.</div>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <ul class="plain-list">
+          
+          <li>
+            <div class="role">1st Runner-Up</div>
+            <div class="org">Hackathon organized by GDG, HBTU Kanpur</div>
+          </li>
+          <li>
+            <div class="role">2nd Runner-Up</div>
+            <div class="org">Internal Hackathon, SIH 2025</div>
+          </li>
+          <li>
+            <div class="role">Prize + 4th position (of top 60 teams)</div>
+            <div class="org"> MSME Expo, CSA Kanpur</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="big">Building something a backend needs<br>or a dataset needs explaining?</div>
+    <a class="btn primary"
+   href="mailto:vedsahu.2005@gmail.com?subject=Hello%20Ved%20Sahu&body=Dear%20Ved%20Sahu,%0A%0A">
+   Mail Me
+</a>
+    <a class="btn primary" href="https://github.com/vedxcodes" target="_blank" rel="noopener">GitHub</a>
+    <a class="btn primary" href="https://linkedin.com/in/VedSahu" target="_blank" rel="noopener">LinkedIn</a>
+    <div class="fine">Kanpur, Uttar Pradesh, India — Ved Prakash Sahu, HBTU Kanpur</div>
+  </div>
+</footer>
+
+<script>
+  const taglines = {
+    both: '<strong>Backend engineer and product-data analyst</strong> who builds real-time financial pipelines, then turns the same data into dashboards and decisions.',
+    eng: '<strong>Backend / systems engineer</strong> — real-time pipelines, RAG architectures, and distributed data stores for financial-grade products.',
+    data: '<strong>Product &amp; data analyst</strong> — turning transaction and usage data into churn models, KPIs, and decisions teams can act on.'
+  };
+
+  const buttons = document.querySelectorAll('.lens button');
+  const projCards = document.querySelectorAll('#projGrid .card');
+  const skillGroups = document.querySelectorAll('.skill-group');
+  const taglineEl = document.getElementById('tagline');
+
+  function applyLens(lens){
+    taglineEl.innerHTML = taglines[lens];
+
+    buttons.forEach(b => {
+      const active = b.dataset.lens === lens;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+
+    projCards.forEach(card => {
+      const matches = card.dataset.lens === lens;
+      card.style.order = (lens !== 'both' && matches) ? '1' : '5';
+      card.classList.toggle('emph', lens !== 'both' && matches);
+    });
+
+    skillGroups.forEach(group => {
+      const g = group.dataset.lens;
+      const dim = lens !== 'both' && g && g !== lens;
+      group.classList.toggle('dimmed', dim);
+    });
+  }
+
+  buttons.forEach(b => b.addEventListener('click', () => applyLens(b.dataset.lens)));
+</script>
+
+</body>
+</html>
